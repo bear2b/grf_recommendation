@@ -54,3 +54,13 @@ openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 36
 * create https server
 uvicorn server:app --ssl-keyfile key.pem --ssl-certfile cert.pem --reload
 
+
+### Test
+I created an example : 
+* Editor : https://ui-dev.argoflow.io/home/projects/659579887e5bd900128038bd
+* link and vistor Id:https://dev-org-argo.argoflow.io/test.sl?sl=ff8d9e38d19a6c65ae95123fb344a6da&q=174810-51961
+
+If no visitor Id or not found, then Recommendation (top right) appears
+
+Script is script.js to be inserted as script in editor
+
