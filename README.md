@@ -34,26 +34,72 @@ It's really a first test. See extract.py
 ## Locally
 
 ### Create virtual env
+```bash
 python3.9 -m venv venv
 source venv/bin/activate
-
+```
 ### Install dependencies
+```bash
 pip install -r requirements.txt
-
+```
 ### Run 
-* app : streamlit run app.py
-    * example data :
+* app : 
+```bash
+streamlit run app.py
+```
+* example data :
         * https://nemato-data.fr/public/output.csv (full)
         * https://nemato-data.fr/public/small.csv (extract)
-* server: uvicorn server:app --reload
-    * for the demo, I used ngrok as a tunnel : then no https is needed, it's provided by ngrok
+* server: 
+```bash
+uvicorn server:app --reload
+```
+NOTE: for the demo, I used ngrok as a tunnel : then no https is needed, it's provided by ngrok. Same in case if you use CloudFlare in front of your server.
 
 ### HTTPS
-* create keys
+* create keys:
+```bash
 openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
+```
 * create https server
+```bash
 uvicorn server:app --ssl-keyfile key.pem --ssl-certfile cert.pem --reload
+```
 
+### Service
+
+Create grf_recommendation.service in /etc/systemd/system:
+```bash
+[Unit]
+Description=GRF Recommendation
+After=network.target
+
+[Service]
+WorkingDirectory=/argo/grf_recommendation
+ExecStart=/home/admin/.local/bin/uvicorn server:app --reload
+Type=simple
+PIDFile=/var/run/grf_recommendation.pid
+Restart=always
+
+User=admin
+Group=admin
+
+[Install]
+WantedBy=default.target
+```
+
+Enable and start service:
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable grf_recommendation.service
+sudo systemctl start grf_recommendation.service
+sudo systemctl status grf_recommendation.service
+```
+
+See logs:
+```bash
+sudo journalctl -u grf_recommendation.service
+```
 
 ### Test
 I created an example : 
