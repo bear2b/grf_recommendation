@@ -47,6 +47,9 @@ pip install -r requirements.txt
         * https://nemato-data.fr/public/small.csv (extract)
 * server: uvicorn server:app --reload
     * for the demo, I used ngrok as a tunnel : then no https is needed, it's provided by ngrok
+    * 2 routes:
+        * /generate_test is there to build the model out of <https://nemato-data.fr/public/output.csv>. Needs to be called only once
+        * /recommendations/{visitor_id} to get recommations for this vistor
 
 ### HTTPS
 * create keys

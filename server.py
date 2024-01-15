@@ -28,17 +28,22 @@ async def root():
 
 @app.get("/generate_test")
 async def gerenate_test():
-    print("generating test data and model")
-    url = "https://nemato-data.fr/public/output.csv"
-    name_csv = url.split('/')[-1]
-    name = name_csv.split('.')[0]
-    #try to load corresponding model and dataset
-    df,model,dataset = load_model_and_dataset(name)
-    if model is None:
-        df = load_pd_data_article(url)
-        model, dataset = build_recommender_article(df)
-        save_model_and_dataset(df, model,dataset,_name=name)
-    print("model is ready")
+    try:
+        print("generating test data and model")
+        url = "https://nemato-data.fr/public/output.csv"
+        name_csv = url.split('/')[-1]
+        name = name_csv.split('.')[0]
+        #try to load corresponding model and dataset
+        df,model,dataset = load_model_and_dataset(name)
+        if model is None:
+            df = load_pd_data_article(url)
+            model, dataset = build_recommender_article(df)
+            save_model_and_dataset(df, model,dataset,_name=name)
+
+        print("model is ready")
+        return {"message": "model is ready, in output.pkl"}
+    except:
+        return {"message": "error"}
 
 @app.get("/recommendations/{visitor_id}")
 async def get_recos(visitor_id):
