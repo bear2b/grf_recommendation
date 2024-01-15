@@ -1,7 +1,7 @@
 
 from lightfm import LightFM
 from lightfm.data import Dataset
-import multiprocessing
+#import multiprocessing
 import pickle
 import pandas as pd
 
@@ -97,7 +97,7 @@ def load_pd_data_article(url):
 
 def build_recommender(df):
     print("build_recommender")
-    num_threads = multiprocessing.cpu_count() -1
+    num_threads = 1#multiprocessing.cpu_count() -1
     print("num_threads=",num_threads)
     _dataset = Dataset()
     _dataset.fit((x for x in df['visitor']), (x for x in df['smartlink_id']))
@@ -112,7 +112,7 @@ def build_recommender(df):
 
 def build_recommender_article(df):
     print("build_recommender")
-    num_threads = multiprocessing.cpu_count() -1
+    num_threads = 1#multiprocessing.cpu_count() -1
     print("num_threads=",num_threads)
     _dataset = Dataset()
     _dataset.fit((x for x in df['visitor']), (x for x in df['article_name']))
